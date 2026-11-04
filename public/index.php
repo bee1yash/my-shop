@@ -8,5 +8,10 @@ use App\Services\ProductService;
 
 $repository = new ProductRepository(Database::connection());
 $service = new ProductService($repository);
+$controller = new ProductController($service);
 
-(new ProductController($service))->index();
+match ($_GET['action'] ?? 'index') {
+    'edit'   => $controller->edit(),
+    'delete' => $controller->delete(),
+    default  => $controller->index(),
+};
